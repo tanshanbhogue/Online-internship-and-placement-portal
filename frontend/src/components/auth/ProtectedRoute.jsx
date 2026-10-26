@@ -1,0 +1,46 @@
+// ==============================================================================
+// FILE   : frontend/src/components/auth/ProtectedRoute.jsx
+// STORY  : #19 Student Login and Session Validation  [FR-001; SEC-01, SEC-03, SEC-04, SEC-05, SEC-07]
+// OWNER  : Sanskar (@sanskarghenappagol)   |   MERGE ORDER: Phase 3
+// ==============================================================================
+//
+// PURPOSE
+//   Route guard used by App.jsx for every route.
+//
+// BEHAVIOUR
+//   default export ProtectedRoute({ access, children }):
+//     public -> render children ; authenticated -> require user ; student/admin -> require that role.
+//     While auth is loading render a spinner. No user -> <Navigate to="/login" replace state={{ from: location }} />. Wrong role -> a 'not allowed' page (403).
+//   Guards are UX only; the server enforces the same rules (SEC-07).
+//
+// ==============================================================================
+// CLAUDE: implement this file in place. KEEP this header comment at the top of the file, write the code below it, and do not edit files owned by other stories.
+// ==============================================================================
+
+import { Navigate, useLocation } from "react-router-dom";
+
+import { useAuth } from "../../context/AuthContext.jsx";
+import StatusMessage from "../common/StatusMessage.jsx";
+
+/**
+ * access: public | authenticated | student | admin.
+ * UX only: the server enforces the same rules on every request (SEC-07).
+ */
+export default function ProtectedRoute({ access = "authenticated", children }) {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+
+  if (access === "public") return children;
+  if (loading) return <StatusMessage kind="loading" message="Loading..." />;
+  if (!user) return <Navigate to="/login" replace state={{ from: location }} />;
+
+  if ((access === "student" || access === "admin") && user.role !== access) {
+    return (
+      <div className="page-medium card">
+        <h1>Not allowed</h1>
+        <StatusMessage kind="error" message="You do not have permission to view this page (403)." />
+      </div>
+    );
+  }
+  return children;
+}
