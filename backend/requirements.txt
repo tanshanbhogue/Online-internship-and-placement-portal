@@ -1,0 +1,29 @@
+# ==============================================================================
+# FILE   : backend/requirements.txt
+# STORY  : Foundation - shared scaffold (chore, no backlog issue)
+# OWNER  : Sinchana (@sinchanaurs1104)   |   MERGE ORDER: Phase 0
+# ==============================================================================
+#
+# PURPOSE
+#   Pinned Python dependencies for the backend.
+#
+# PACKAGES TO LIST (pin versions when generating)
+#   fastapi, uvicorn[standard], sqlalchemy>=2, pydantic>=2, pydantic-settings, email-validator, python-multipart (uploads),
+#   PyJWT (session tokens), argon2-cffi (password hashing, Argon2id), pytest, httpx (TestClient), freezegun (time control in tests)
+#
+# ==============================================================================
+# CLAUDE: implement this file in place. KEEP this header comment at the top of the file, write the code below it, and do not edit files owned by other stories.
+# ==============================================================================
+
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+sqlalchemy==2.0.36
+pydantic==2.10.4
+pydantic-settings==2.7.0
+email-validator==2.2.0
+python-multipart==0.0.20
+PyJWT==2.10.1
+argon2-cffi==23.1.0
+pytest==8.3.4
+httpx==0.28.1
+freezegun==1.5.1
