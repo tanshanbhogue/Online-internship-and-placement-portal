@@ -1,0 +1,17 @@
+/*
+==============================================================================
+FILE   : frontend/src/styles/global.css
+STORY  : Foundation - shared scaffold (chore, no backlog issue)
+OWNER  : Sinchana (@sinchanaurs1104)   |   MERGE ORDER: Phase 0
+==============================================================================
+
+PURPOSE
+  Global styles: CSS reset, colour variables, typography, form and button basics, responsive container.
+
+NOTES
+  Mobile-first. Breakpoints at 640px and 1024px (NFR003). Visible focus outlines. No external font or CDN dependencies.
+
+==============================================================================
+CLAUDE: implement this file in place. KEEP this header comment at the top of the file, write the code below it, and do not edit files owned by other stories.
+==============================================================================
+*/
