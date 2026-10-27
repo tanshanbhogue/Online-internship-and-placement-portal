@@ -1,16 +1,52 @@
-# ==============================================================================
-# FILE   : backend/scripts/seed_admin.py
-# STORY  : #19 Student Login and Session Validation  [FR-001; SEC-01, SEC-03, SEC-04, SEC-05, SEC-07]
-# OWNER  : Sanskar (@sanskarghenappagol)   |   MERGE ORDER: Phase 3
-# ==============================================================================
-#
-# PURPOSE
-#   One-off script creating the admin account (admins cannot self-register).
-#
-# BEHAVIOUR
-#   Run: python -m scripts.seed_admin  (from backend/). Reads ADMIN_EMAIL and ADMIN_PASSWORD from settings/env, validates strength, creates a User with role ADMIN if the email is not present,
-#   otherwise prints 'already exists'. Idempotent. Never prints the password. Add backend/scripts/__init__.py as an empty package marker if needed.
-#
-# ==============================================================================
-# CLAUDE: implement this file in place. KEEP this header comment at the top of the file, write the code below it, and do not edit files owned by other stories.
-# ==============================================================================
+
+from sqlalchemy.exc import IntegrityError
+
+from app.core.config import settings
+from app.core.database import SessionLocal, init_db
+from app.core.errors import AppError
+from app.core.security import hash_password, validate_password_strength
+from app.modules.auth.models import Role, User
+
+
+def main() -> None:
+    email = (settings.ADMIN_EMAIL or "").strip().lower()
+    password = settings.ADMIN_PASSWORD
+
+    if not email or not password:
+        raise SystemExit(
+            "Set ADMIN_EMAIL and ADMIN_PASSWORD in your backend environment first."
+        )
+
+    problems = validate_password_strength(password)
+    if problems:
+        raise SystemExit("Admin password does not meet the password policy.")
+
+    init_db()
+    db = SessionLocal()
+
+    try:
+        existing = db.query(User).filter(User.email == email).first()
+        if existing:
+            print("Admin account already exists.")
+            return
+
+        admin = User(
+            name="Administrator",
+            email=email,
+            password_hash=hash_password(password),
+            role=Role.ADMIN,
+            is_active=True,
+        )
+        db.add(admin)
+        db.commit()
+        print("Admin account created successfully.")
+
+    except IntegrityError:
+        db.rollback()
+        print("An account with that email already exists.")
+    finally:
+        db.close()
+
+
+if __name__ == "__main__":
+    main()

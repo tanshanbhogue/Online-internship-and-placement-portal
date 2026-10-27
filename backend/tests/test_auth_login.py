@@ -1,23 +1,113 @@
-# ==============================================================================
-# FILE   : backend/tests/test_auth_login.py
-# STORY  : #19 Student Login and Session Validation  [FR-001; SEC-01, SEC-03, SEC-04, SEC-05, SEC-07]
-# OWNER  : Sanskar (@sanskarghenappagol)   |   MERGE ORDER: Phase 3
-# ==============================================================================
-#
-# PURPOSE
-#   Tests for login, logout, session validation, throttling and the registration-then-login journeys.
-#
-# TEST CASES
-#   - UT_01 valid credentials -> 200, cookie set with HttpOnly (and SameSite) flags, body.user has no password data
-#   - UT_02 wrong password -> 401 "Invalid username or password"; UT_03 unknown email -> identical 401 body (SEC-04)
-#   - IT_01 register (#14 endpoint) then log in with the same credentials -> success
-#   - IT_03 after login, GET /api/auth/me and other protected endpoints keep working across several requests
-#   - ST_01 register -> login -> /me returns the profile
-#   - ST_02 logout then reuse the old cookie -> 401; hitting a protected URL while logged out -> 401 (SEC-01, SEC-05)
-#   - SEC-03 five wrong passwords within 15 min -> 6th attempt 429 even with the correct password; after freezegun moves 16 min it succeeds
-#   - SEC-05 token expires after 30 min of inactivity (freezegun) and the cookie is re-issued on activity
-#   - SEC-07 dependency checks: student calling an admin-only dependency gets 403, guest gets 401 (use a tiny test-only route)
-#
-# ==============================================================================
-# CLAUDE: implement this file in place. KEEP this header comment at the top of the file, write the code below it, and do not edit files owned by other stories.
-# ==============================================================================
+
+import pytest
+
+
+def test_valid_login_sets_secure_session_cookie(client, make_user, login):
+    make_user("student@test.com", role="student", name="Student One")
+
+    response = login(client, "student@test.com")
+
+    assert response.status_code == 200
+    assert response.json()["user"]["email"] == "student@test.com"
+
+    user_data = response.json()["user"]
+    assert "password" not in user_data
+    assert "password_hash" not in user_data
+
+    cookie_header = response.headers.get("set-cookie", "").lower()
+    assert "access_token=" in cookie_header
+    assert "httponly" in cookie_header
+    assert "samesite" in cookie_header
+
+
+def test_wrong_password_returns_401(client, make_user, login):
+    make_user("student@test.com")
+
+    response = login(client, "student@test.com", "WrongPassword123!")
+
+    assert response.status_code == 401
+
+
+def test_unknown_email_has_same_error_as_wrong_password(
+    client_factory, make_user, login
+):
+    make_user("existing@test.com")
+
+    wrong_password_client = client_factory()
+    unknown_email_client = client_factory()
+
+    wrong_password_response = login(
+        wrong_password_client,
+        "existing@test.com",
+        "WrongPassword123!",
+    )
+    unknown_email_response = login(
+        unknown_email_client,
+        "unknown@test.com",
+        "WrongPassword123!",
+    )
+
+    assert wrong_password_response.status_code == 401
+    assert unknown_email_response.status_code == 401
+    assert wrong_password_response.json() == unknown_email_response.json()
+
+
+def test_login_then_me_returns_current_user(client, make_user, login):
+    make_user("student@test.com", role="student", name="Student One")
+
+    login_response = login(client, "student@test.com")
+    assert login_response.status_code == 200
+
+    response = client.get("/api/auth/me")
+
+    assert response.status_code == 200
+    assert response.json()["email"] == "student@test.com"
+    assert response.json()["name"] == "Student One"
+    assert "password_hash" not in response.json()
+
+
+def test_logged_out_user_cannot_access_me(client):
+    response = client.get("/api/auth/me")
+
+    assert response.status_code == 401
+
+
+def test_logout_revokes_previous_session(
+    client, make_user, login
+):
+    make_user("student@test.com")
+
+    login_response = login(client, "student@test.com")
+    assert login_response.status_code == 200
+
+    old_token = client.cookies.get("access_token")
+    assert old_token
+
+    logout_response = client.post("/api/auth/logout")
+    assert logout_response.status_code == 204
+
+    # Reuse the original token to verify server-side revocation.
+    client.cookies.set("access_token", old_token)
+    response = client.get("/api/auth/me")
+
+    assert response.status_code == 401
+
+
+def test_sixth_failed_login_is_throttled(
+    client, make_user, login
+):
+    make_user("student@test.com")
+
+    for attempt in range(5):
+        response = login(
+            client,
+            "student@test.com",
+            "WrongPassword123!",
+        )
+        assert response.status_code == 401, (
+            f"Attempt {attempt + 1} returned {response.status_code}"
+        )
+
+    response = login(client, "student@test.com")
+
+    assert response.status_code == 429

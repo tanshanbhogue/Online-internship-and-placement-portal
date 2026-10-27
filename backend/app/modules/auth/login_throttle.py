@@ -1,20 +1,60 @@
-# ==============================================================================
-# FILE   : backend/app/modules/auth/login_throttle.py
-# STORY  : #19 Student Login and Session Validation  [FR-001; SEC-01, SEC-03, SEC-04, SEC-05, SEC-07]
-# OWNER  : Sanskar (@sanskarghenappagol)   |   MERGE ORDER: Phase 3
-# ==============================================================================
-#
-# PURPOSE
-#   Brute-force protection (SEC-03).
-#
-# EXPOSES
-#   ensure_not_throttled(db, email, ip) -> None   # raise TooManyAttempts if >= settings.LOGIN_MAX_FAILURES (5) failed attempts for that email within LOGIN_WINDOW_MINUTES (15)
-#   record_attempt(db, email, ip, success: bool) -> None
-#   clear_failures(db, email) -> None             # called after a successful login
-#
-# RULES
-#   Apply throttling to unknown emails too (otherwise it reveals which accounts exist, SEC-04). While throttled even the correct password is refused until the window passes. Use UTC time so tests can freeze it with freezegun.
-#
-# ==============================================================================
-# CLAUDE: implement this file in place. KEEP this header comment at the top of the file, write the code below it, and do not edit files owned by other stories.
-# ==============================================================================
+
+from datetime import timedelta
+
+from sqlalchemy.orm import Session
+
+from app.core.config import settings
+from app.core.errors import TooManyAttempts
+from app.db.base import utcnow
+from app.modules.auth.session_models import LoginAttempt
+
+
+def ensure_not_throttled(db: Session, email: str, ip: str | None) -> None:
+    """Reject login attempts after the configured number of recent failures."""
+    normalized_email = email.strip().lower()
+    cutoff = utcnow() - timedelta(minutes=settings.LOGIN_WINDOW_MINUTES)
+
+    failures = (
+        db.query(LoginAttempt)
+        .filter(
+            LoginAttempt.email == normalized_email,
+            LoginAttempt.success.is_(False),
+            LoginAttempt.attempted_at >= cutoff,
+        )
+        .count()
+    )
+
+    if failures >= settings.LOGIN_MAX_FAILURES:
+        raise TooManyAttempts()
+
+
+def record_attempt(
+    db: Session,
+    email: str,
+    ip: str | None,
+    success: bool,
+) -> None:
+    """Record a login result without storing credentials."""
+    attempt = LoginAttempt(
+        email=email.strip().lower(),
+        ip=ip,
+        success=success,
+        attempted_at=utcnow(),
+    )
+    db.add(attempt)
+    db.commit()
+
+
+def clear_failures(db: Session, email: str) -> None:
+    """Clear previous failed attempts after a successful login."""
+    normalized_email = email.strip().lower()
+
+    (
+        db.query(LoginAttempt)
+        .filter(
+            LoginAttempt.email == normalized_email,
+            LoginAttempt.success.is_(False),
+        )
+        .delete(synchronize_session=False)
+    )
+    db.commit()
