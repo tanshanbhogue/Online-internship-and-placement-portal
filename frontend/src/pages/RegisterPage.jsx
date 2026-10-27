@@ -13,3 +13,19 @@
 // ==============================================================================
 // CLAUDE: implement this file in place. KEEP this header comment at the top of the file, write the code below it, and do not edit files owned by other stories.
 // ==============================================================================
+import { Link, useNavigate } from "react-router-dom";
+
+import RegisterForm from "../components/auth/RegisterForm.jsx";
+
+export default function RegisterPage() {
+    const navigate = useNavigate();
+    return (
+        <div className="page-narrow card">
+            <h1>Create your account</h1>
+            <RegisterForm onSuccess={() => navigate("/login", { state: { registered: true } })} />
+            <p className="small" style={{ marginTop: "1rem" }}>
+                Already have an account? <Link to="/login">Log in</Link>
+            </p>
+        </div>
+    );
+}

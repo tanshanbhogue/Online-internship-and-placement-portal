@@ -13,3 +13,6 @@
 // ==============================================================================
 // CLAUDE: implement this file in place. KEEP this header comment at the top of the file, write the code below it, and do not edit files owned by other stories.
 // ==============================================================================
+import RegisterPage from "../pages/RegisterPage.jsx";
+
+export default [{ path: "/register", element: <RegisterPage />, access: "public" }];
