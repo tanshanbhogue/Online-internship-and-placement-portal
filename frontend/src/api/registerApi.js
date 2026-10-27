@@ -13,3 +13,12 @@
 // ==============================================================================
 // CLAUDE: implement this file in place. KEEP this header comment at the top of the file, write the code below it, and do not edit files owned by other stories.
 // ==============================================================================
+import client from "./client";
+
+export async function registerStudent({ name, email, password, college, batch }) {
+    const payload = { name, email, password };
+    if (college && college.trim()) payload.college = college.trim();
+    if (batch && batch.trim()) payload.batch = batch.trim();
+    const { data } = await client.post("/auth/register", payload);
+    return data;
+}
