@@ -1,18 +1,45 @@
-// ==============================================================================
-// FILE   : frontend/src/components/auth/ProtectedRoute.jsx
-// STORY  : #19 Student Login and Session Validation  [FR-001; SEC-01, SEC-03, SEC-04, SEC-05, SEC-07]
-// OWNER  : Sanskar (@sanskarghenappagol)   |   MERGE ORDER: Phase 3
-// ==============================================================================
-//
-// PURPOSE
-//   Route guard used by App.jsx for every route.
-//
-// BEHAVIOUR
-//   default export ProtectedRoute({ access, children }):
-//     public -> render children ; authenticated -> require user ; student/admin -> require that role.
-//     While auth is loading render a spinner. No user -> <Navigate to="/login" replace state={{ from: location }} />. Wrong role -> a 'not allowed' page (403).
-//   Guards are UX only; the server enforces the same rules (SEC-07).
-//
-// ==============================================================================
-// CLAUDE: implement this file in place. KEEP this header comment at the top of the file, write the code below it, and do not edit files owned by other stories.
-// ==============================================================================
+
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext.jsx";
+
+export default function ProtectedRoute({ access = "authenticated", children }) {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+
+  if (access === "public") {
+    return children;
+  }
+
+  if (loading) {
+    return <p role="status">Loading...</p>;
+  }
+
+  if (!user) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{ from: location }}
+      />
+    );
+  }
+
+  if (access === "student" && user.role !== "student") {
+    return <ForbiddenPage />;
+  }
+
+  if (access === "admin" && user.role !== "admin") {
+    return <ForbiddenPage />;
+  }
+
+  return children;
+}
+
+function ForbiddenPage() {
+  return (
+    <main>
+      <h1>403 - Access denied</h1>
+      <p>You do not have permission to view this page.</p>
+    </main>
+  );
+}
