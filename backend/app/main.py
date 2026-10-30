@@ -45,6 +45,26 @@ def _include_discovered_routers(app: FastAPI) -> None:
             app.include_router(router)
 
 
+def _install_discovered_middleware(app: FastAPI) -> None:
+    """Sprint 2 extension point: call ``install(app)`` on every module in app.middleware (alphabetical order).
+
+    Each later install wraps the earlier ones, so the LAST module (alphabetically) is the OUTERMOST layer.
+    A story adds a middleware by dropping a file into app/middleware/; nobody edits this file again.
+    """
+    try:
+        middleware_pkg = importlib.import_module("app.middleware")
+    except ModuleNotFoundError as exc:
+        if exc.name != "app.middleware":
+            raise
+        return
+
+    for info in sorted(pkgutil.iter_modules(middleware_pkg.__path__, prefix="app.middleware."), key=lambda i: i.name):
+        module = importlib.import_module(info.name)
+        install = getattr(module, "install", None)
+        if callable(install):
+            install(app)
+
+
 @asynccontextmanager
 async def _lifespan(_app: FastAPI):
     init_db()
@@ -79,6 +99,7 @@ def create_app() -> FastAPI:
         return {"status": "ok"}
 
     _include_discovered_routers(app)
+    _install_discovered_middleware(app)
     return app
 
 
