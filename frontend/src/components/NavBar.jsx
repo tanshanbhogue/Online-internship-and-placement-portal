@@ -7,6 +7,12 @@ const useAuth = Object.values(authModules)[0]?.useAuth;
 const useNoAuth = () => null;
 const useAuthSafe = useAuth || useNoAuth; // stable for the lifetime of the app, so hook order never changes
 
+const navModules = import.meta.glob("../nav/*.nav.js", { eager: true });
+const extraNavItems = Object.values(navModules)
+  .flatMap((m) => (Array.isArray(m.default) ? m.default : [m.default]))
+  .filter(Boolean)
+  .sort((a, b) => (a.order ?? 100) - (b.order ?? 100));
+
 const linkClass = ({ isActive }) => (isActive ? "active" : undefined);
 
 export default function NavBar() {
@@ -14,6 +20,12 @@ export default function NavBar() {
   const [open, setOpen] = useState(false);
   const user = auth?.user;
   const close = () => setOpen(false);
+  const visibleExtras = extraNavItems.filter(
+    (item) =>
+      item.access === "authenticated" ||
+      (item.access === "student" && auth?.isStudent) ||
+      (item.access === "admin" && auth?.isAdmin)
+  );
 
   return (
     <header className="navbar">
@@ -44,6 +56,11 @@ export default function NavBar() {
               {auth.isAdmin && (
                 <li><NavLink to="/admin/question-bank" className={linkClass} onClick={close}>Admin Question Bank</NavLink></li>
               )}
+              {visibleExtras.map((item) => (
+                <li key={item.to}>
+                  <NavLink to={item.to} end={item.end} className={linkClass} onClick={close}>{item.label}</NavLink>
+                </li>
+              ))}
               <li className="nav-user">{user.name}</li>
               <li>
                 <button type="button" onClick={() => { close(); auth.logout(); }}>
