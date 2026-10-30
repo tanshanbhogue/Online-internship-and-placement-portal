@@ -1,11 +1,3 @@
-# Story #25 Score and Answer Analysis - owner: Sinchana (sinchanaurs1104)
-# File: backend/app/modules/mock_result/schemas.py
-#
-# Contract (UC-7). Shapes exist ONLY for a CLOSED attempt, so answer keys and explanations never reach the
-# browser while a test is running (SEC-12).
-#   ResultSummary  score, accuracy, correct/incorrect/skipped, time taken, status, percentile (when enough data)
-#   ResultDetail   ResultSummary + the question-by-question breakdown (optionally filtered)
-#   HistoryItem    one row of "My Test History"
 from datetime import datetime
 
 from pydantic import BaseModel
