@@ -1,12 +1,3 @@
-# Story #25 Score and Answer Analysis - owner: Sinchana (sinchanaurs1104)
-# File: backend/app/modules/mock_result/service.py
-#
-# Contract
-#   get_result(db, student, attempt_id, difficulty=None, outcome=None) -> ResultDetail
-#       404 for a missing OR someone else's attempt (SEC-06). 409 code=attempt_in_progress while the test still runs
-#       (SEC-12). An open attempt whose time is up is closed first through story #24 (never trust "still open").
-#   list_history(db, student, limit=100) -> HistoryResponse    closed attempts only, newest first
-# Scores were computed once by finalize_attempt (#24); this module only reads them.
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, selectinload
 
