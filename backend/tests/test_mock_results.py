@@ -1,8 +1,3 @@
-# Story #25 Score and Answer Analysis - owner: Sinchana (sinchanaurs1104)
-# File: backend/tests/test_mock_results.py
-#
-# Covers Test Plan UT_15, IT_09, ST_07 (analysis part), ST_08 and Security SEC-06, SEC-12.
-# Attempts are built from the #24 models and closed with finalize_attempt, so #23's routes are not needed.
 from datetime import datetime, timedelta, timezone
 
 import pytest
