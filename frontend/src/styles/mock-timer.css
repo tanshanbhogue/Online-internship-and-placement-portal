@@ -1,0 +1,9 @@
+/* Story #24 - timer and auto-submit notice (owner: Eshwar). Loaded automatically from src/styles/. */
+.attempt-timer { display: inline-flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; padding: 0.4rem 0.9rem; border-radius: 999px; border: 2px solid var(--border); background: #fff; }
+.attempt-timer-label { font-size: 0.85rem; color: var(--muted); }
+.attempt-timer-value { font-size: 1.4rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.attempt-timer-warning { font-size: 0.85rem; font-weight: 700; }
+.attempt-timer-low { border-color: #f0d58a; background: var(--warning-bg); color: var(--warning); }
+.attempt-timer-critical { border-color: #f2b8b5; background: var(--danger-bg); color: var(--danger); }
+.status-warning { background: var(--warning-bg); color: var(--warning); border-color: #f0d58a; }
+.auto-submit-notice { margin-top: 0; }
