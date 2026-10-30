@@ -1,9 +1,3 @@
-# Story #25 Score and Answer Analysis - owner: Sinchana (sinchanaurs1104)
-# File: backend/app/modules/mock_result/router.py
-#
-# Contract (student-only; responses are never cached so a new attempt shows up at once)
-#   GET /api/mock-results                         "My Test History": closed attempts, newest first
-#   GET /api/mock-results/{attempt_id}            score summary + breakdown; ?difficulty=easy|medium|hard  ?outcome=correct|incorrect|skipped
 from typing import Literal
 
 from fastapi import APIRouter, Depends, Query, Response
