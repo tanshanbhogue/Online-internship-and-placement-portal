@@ -1,0 +1,16 @@
+.trend-figure { margin: 0; }
+.trend-chart { width: 100%; height: auto; max-height: 320px; display: block; }
+.trend-grid { stroke: var(--border); stroke-width: 1; }
+.trend-axis { fill: var(--muted); font-size: 11px; }
+.trend-score-line { stroke: var(--primary); stroke-width: 2.5; }
+.trend-avg-line { stroke: #8a5a00; stroke-width: 2.5; stroke-dasharray: 6 4; }
+.trend-dot { fill: var(--primary); stroke: #fff; stroke-width: 1.5; }
+.trend-legend { display: flex; gap: 1rem; flex-wrap: wrap; color: var(--muted); }
+.trend-table summary { cursor: pointer; margin-top: 0.5rem; color: var(--primary); }
+.insight-list { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: 0.6rem; }
+.insight-row { padding: 0.7rem 0.9rem; }
+.insight-row p { margin: 0.3rem 0 0; }
+.insight-bar { height: 8px; background: #dfe5f2; border-radius: 999px; overflow: hidden; margin-top: 0.4rem; }
+.insight-bar > div { height: 100%; background: var(--primary); }
+.focus-list { margin: 0 0 1rem; padding-left: 1.25rem; }
+.focus-list li { margin-bottom: 0.35rem; }
