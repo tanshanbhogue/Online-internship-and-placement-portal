@@ -1,0 +1,23 @@
+/* Story #23 - mock test pages (owner: Eshwar). Loaded automatically from src/styles/. */
+.mock-test-card { display: flex; flex-direction: column; gap: 0.4rem; height: 100%; }
+.mock-test-card .btn { margin-top: auto; align-self: flex-start; }
+
+.attempt-header { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; justify-content: space-between; background: var(--bg); padding: 0.5rem 0; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem; }
+.attempt-title { margin: 0; font-size: 1.25rem; }
+.attempt-layout { display: grid; gap: 1rem; grid-template-columns: 1fr; align-items: start; }
+.attempt-fieldset { border: none; padding: 0; margin: 0; min-width: 0; }
+.attempt-prompt { font-size: 1.1rem; font-weight: 700; padding: 0; margin-bottom: 0.75rem; overflow-wrap: anywhere; }
+.attempt-fieldset:disabled .option { cursor: not-allowed; opacity: 0.7; }
+
+.question-nav { display: grid; grid-template-columns: repeat(auto-fill, minmax(2.75rem, 1fr)); gap: 0.4rem; margin-bottom: 0.5rem; }
+.qnav-btn { min-height: 2.75rem; border: 2px solid var(--border); border-radius: 8px; background: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+.qnav-answered { background: var(--info-bg); border-color: #9fb4ee; color: #223a85; }
+.qnav-marked { border-color: #e0a100; box-shadow: inset 0 0 0 2px #e0a100; }
+.qnav-current { outline: 3px solid var(--primary); outline-offset: 1px; }
+.qnav-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.attempt-confirm { border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem; background: var(--warning-bg); }
+
+@media (min-width: 900px) {
+  .attempt-layout { grid-template-columns: minmax(0, 1fr) 18rem; }
+  .attempt-side { position: sticky; top: 5.5rem; }
+}
