@@ -1,9 +1,4 @@
-/* Story #29 Cross-Browser and Responsive Testing - owner: Tanmayi (tanshanbhogue)
-   File: frontend/src/styles/responsive.css   (loaded by main.jsx's import.meta.glob("./styles/*.css"))
-   Fixes found while testing at 360 / 768 / 1280 px. Only SAFETY rules: nothing here changes the look of a layout
-   that already fits. It is loaded after global.css, so same-specificity rules here win. */
 
-/* never let one wide child create a sideways page scroll (checked by e2e/tests/responsive.spec.js) */
 html, body { max-width: 100%; overflow-x: hidden; }
 img, svg, video, canvas { max-width: 100%; height: auto; }
 pre, code { overflow-wrap: anywhere; }
