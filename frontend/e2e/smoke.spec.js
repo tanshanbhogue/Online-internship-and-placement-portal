@@ -1,8 +1,4 @@
-// Story #29 Cross-Browser and Responsive Testing - owner: Tanmayi (tanshanbhogue)
-// File: frontend/e2e/tests/smoke.spec.js
-//
-// The student journey works the same in every browser: log in, see the listings, take a one-question practice-sized look at
-// the mock-test list, open the analytics and log out. Whole-product API journeys are in backend/tests/test_e2e_journeys.py (story #30).
+
 const { test, expect } = require("@playwright/test");
 const { student, login } = require("./helpers");
 
