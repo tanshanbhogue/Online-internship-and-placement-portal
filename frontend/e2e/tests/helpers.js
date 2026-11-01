@@ -1,4 +1,4 @@
-// Story #29 - owner: Tanmayi (tanshanbhogue) - File: frontend/e2e/tests/helpers.js
+
 const student = { email: process.env.E2E_STUDENT_EMAIL || "ui.student@example.com", password: process.env.E2E_STUDENT_PASSWORD || "Student@123" };
 const admin = { email: process.env.E2E_ADMIN_EMAIL || "ui.admin@example.com", password: process.env.E2E_ADMIN_PASSWORD || "Admin@12345" };
 
