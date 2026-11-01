@@ -1,11 +1,4 @@
-// Story #29 Cross-Browser and Responsive Testing - owner: Tanmayi (tanshanbhogue)
-// File: frontend/e2e/playwright.config.js
-//
-// Run (portal already running, database seeded with backend/scripts/seed_ui_test_data.py):
-//   cd frontend/e2e && npm install && npx playwright install chromium firefox webkit && npx playwright test
-// Environment: E2E_BASE_URL (default http://localhost:5173), E2E_STUDENT_EMAIL / E2E_STUDENT_PASSWORD, E2E_ADMIN_EMAIL / E2E_ADMIN_PASSWORD.
-// Browsers: Chrome/Edge (Chromium engine, "msedge" channel when Microsoft Edge is installed), Firefox, Safari (WebKit engine).
-// Sizes: phone 360x740, tablet 768x1024, desktop 1280x800 (the three layouts of the stylesheet's breakpoints).
+
 const { defineConfig, devices } = require("@playwright/test");
 
 const sizes = {
