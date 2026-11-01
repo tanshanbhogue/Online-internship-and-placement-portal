@@ -1,8 +1,4 @@
-// Story #29 Cross-Browser and Responsive Testing - owner: Tanmayi (tanshanbhogue)
-// File: frontend/e2e/tests/responsive.spec.js
-//
-// For every browser x size project: every page of the portal fits the screen (no sideways scroll), the navigation is
-// usable (menu button on phones, links visible on wider screens) and nothing logs a console error.
+
 const { test, expect } = require("@playwright/test");
 const { student, admin, login, hasHorizontalScroll } = require("./helpers");
 
