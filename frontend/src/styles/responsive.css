@@ -1,0 +1,23 @@
+
+html, body { max-width: 100%; overflow-x: hidden; }
+img, svg, video, canvas { max-width: 100%; height: auto; }
+pre, code { overflow-wrap: anywhere; }
+pre { overflow-x: auto; }
+h1, h2, h3, p, li, td, th, a, .card-meta { overflow-wrap: anywhere; }
+table { max-width: 100%; }
+
+/* touch targets of at least 44 px on phones and tablets (WCAG 2.5.5 / Apple HIG) */
+@media (pointer: coarse) {
+  button, .btn, input[type="submit"], select, .nav-links a { min-height: 44px; }
+  input[type="radio"], input[type="checkbox"] { width: 1.25rem; height: 1.25rem; }
+}
+
+/* text fields must be 16 px on phones, otherwise iOS Safari zooms the page when one is focused */
+@media (max-width: 767px) {
+  input, select, textarea { font-size: 16px; }
+}
+
+/* honour "reduce motion" */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

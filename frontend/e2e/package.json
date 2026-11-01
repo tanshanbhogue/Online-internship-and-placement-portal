@@ -1,0 +1,15 @@
+{
+  "name": "portal-e2e",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Story #29: cross-browser and responsive checks (Playwright). Separate from the app's package.json so the app gains no dependency.",
+  "scripts": {
+    "install:browsers": "playwright install chromium firefox webkit",
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium-desktop --project=chromium-tablet --project=chromium-mobile",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.49.1"
+  }
+}
