@@ -1,9 +1,4 @@
-# Story #30 End-to-End Integration Testing - owner: Tanmayi (tanshanbhogue)
-# File: backend/tests/test_e2e_journeys.py
-#
-# Whole-product journeys through the real HTTP API with the real services and a real database (no mocks of our own code).
-# Needs every Sprint 2 story merged. Test Plan: ST_01..ST_11, IT_xx chains; see docs/e2e-traceability.md.
-# Gap: Sprint 1 has no admin API to POST an internship, so listings are inserted into the database (as the seed script does).
+
 import io
 from datetime import date, datetime, timedelta, timezone
 
