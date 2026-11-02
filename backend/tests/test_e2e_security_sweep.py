@@ -1,8 +1,4 @@
-# Story #30 End-to-End Integration Testing - owner: Tanmayi (tanshanbhogue)
-# File: backend/tests/test_e2e_security_sweep.py
-#
-# One sweep over EVERY Sprint 2 endpoint: guests get 401, admins get 403 on student endpoints, a student never sees
-# another student's data (404), and no endpoint leaks answer keys before submission. Security Requirements SEC-06/07/12/13/14.
+
 import re
 from datetime import datetime, timedelta, timezone
 
