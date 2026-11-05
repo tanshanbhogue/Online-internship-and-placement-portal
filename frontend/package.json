@@ -1,15 +1,21 @@
-{
-  "name": "portal-e2e",
-  "private": true,
-  "version": "1.0.0",
-  "description": "Story #29: cross-browser and responsive checks (Playwright). Separate from the app's package.json so the app gains no dependency.",
-  "scripts": {
-    "install:browsers": "playwright install chromium firefox webkit",
-    "test": "playwright test",
-    "test:chromium": "playwright test --project=chromium-desktop --project=chromium-tablet --project=chromium-mobile",
-    "report": "playwright show-report"
-  },
-  "devDependencies": {
-    "@playwright/test": "1.49.1"
-  }
-}
+   {
+     "name": "internship-portal-frontend",
+     "private": true,
+     "version": "0.1.0",
+     "type": "module",
+     "scripts": {
+       "dev": "vite",
+       "build": "vite build",
+       "preview": "vite preview"
+     },
+     "dependencies": {
+       "axios": "^1.7.9",
+       "react": "^18.3.1",
+       "react-dom": "^18.3.1",
+       "react-router-dom": "^6.28.0"
+     },
+     "devDependencies": {
+       "@vitejs/plugin-react": "^4.3.4",
+       "vite": "^5.4.11"
+     }
+   }
