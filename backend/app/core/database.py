@@ -8,7 +8,7 @@ _is_sqlite = settings.DATABASE_URL.startswith("sqlite")
 
 engine = create_engine(
     settings.DATABASE_URL,
-    connect_args={"check_same_thread": False} if _is_sqlite else {},
+    connect_args={"check_same_thread": False, "timeout": 15} if _is_sqlite else {},
 )
 
 if _is_sqlite:
@@ -17,6 +17,9 @@ if _is_sqlite:
     def _enable_sqlite_foreign_keys(dbapi_connection, _record):
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.execute("PRAGMA journal_mode=WAL")
+        cursor.execute("PRAGMA synchronous=NORMAL")
+        cursor.execute("PRAGMA busy_timeout=15000")
         cursor.close()
 
 
