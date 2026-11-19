@@ -182,3 +182,21 @@ fieldset { border: 1px solid var(--border); border-radius: var(--radius); paddin
   .filters { grid-template-columns: repeat(3, 1fr); }
   .container { padding: 1.5rem; }
 }
+
+
+/* NFR-003: keep interactive controls easy to tap on small screens */
+@media (max-width: 767px) {
+  button,
+  a.btn,
+  input[type="button"],
+  input[type="submit"],
+  [role="button"] {
+    min-height: 48px !important;
+    box-sizing: border-box;
+  }
+
+  .btn-link {
+    min-height: 48px !important;
+    padding: 0.5rem;
+  }
+}

@@ -3,9 +3,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { getMockResult } from "../api/mockResultApi.js";
 import StatusMessage from "../components/common/StatusMessage.jsx";
-import AutoSubmitNotice from "../components/mocktest/AutoSubmitNotice.jsx";
-import BreakdownList from "../components/mocktest/BreakdownList.jsx";
-import ResultSummaryCard from "../components/mocktest/ResultSummaryCard.jsx";
+import AutoSubmitNotice from "../components/mock_test/AutoSubmitNotice.jsx";
+import BreakdownList from "../components/mock_test/BreakdownList.jsx";
+import ResultSummaryCard from "../components/mock_test/ResultSummaryCard.jsx";
 import "../styles/mock-result.css";
 
 export default function MockTestResultPage() {
