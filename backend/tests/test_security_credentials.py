@@ -2,14 +2,14 @@ import logging
 
 import pytest
 
-from backend.app.core.security import (
+from app.core.security import (
     hash_password,
     needs_rehash,
     validate_password_strength,
     verify_dummy,
     verify_password,
 )
-from backend.app.core.log_redaction import RedactingFilter
+from app.core.log_redaction import RedactingFilter
 
 
 @pytest.mark.parametrize(

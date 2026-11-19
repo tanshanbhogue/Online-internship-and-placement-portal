@@ -1,0 +1,2 @@
+# Extra packages for the NFR performance tooling (backend/perf). httpx, uvicorn and the app's own packages come from backend/requirements.txt.
+python-docx>=1.1
