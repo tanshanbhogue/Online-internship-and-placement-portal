@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 
 import { getMockHistory } from "../api/mockResultApi.js";
 import StatusMessage from "../components/common/StatusMessage.jsx";
-import { formatDuration } from "../components/mocktest/ResultSummaryCard.jsx";
-
+import { formatDuration } from "../components/mock_test/ResultSummaryCard.jsx";
 const when = (v) => (v ? new Date(v).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }) : "");
 
 export default function MockTestHistoryPage() {
